@@ -120,9 +120,8 @@ int main(int argc, char* argv[])
             std::cout << "XASST Service Starting..." << std::endl;
             initDatabase();
         })
-        .registerPreRoutingAdvice([](const HttpRequestPtr& req, HttpResponsePtr& resp, bool& next) {
+        .registerPreRoutingAdvice([](const HttpRequestPtr& req) {
             LOG_INFO << req->methodString() << " " << req->path();
-            next = true;
         })
         .setThreadNum(4)
         .run();

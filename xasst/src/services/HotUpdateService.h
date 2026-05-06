@@ -24,7 +24,7 @@ class HotUpdateService
 
     bool registerApp(const std::string& appId, int64_t userId);
 
-    std::shared_ptr<drogon_model::xasst::Library> uploadLibrary(
+    std::shared_ptr<models::Library> uploadLibrary(
         const std::string& appId,
         const std::string& libName,
         const std::string& libPath,
@@ -35,7 +35,7 @@ class HotUpdateService
         const std::string& appId,
         const std::vector<std::pair<std::string, std::string>>& localLibs);
 
-    std::shared_ptr<drogon_model::xasst::Library> getLatestLibrary(
+    std::shared_ptr<models::Library> getLatestLibrary(
         const std::string& appId,
         const std::string& libName);
 

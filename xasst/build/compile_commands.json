@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/controllers/FeedbackController.cpp.o -c /workspace/xasst/src/controllers/FeedbackController.cpp",
+  "file": "/workspace/xasst/src/controllers/FeedbackController.cpp",
+  "output": "CMakeFiles/xasst.dir/src/controllers/FeedbackController.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/controllers/FileController.cpp.o -c /workspace/xasst/src/controllers/FileController.cpp",
+  "file": "/workspace/xasst/src/controllers/FileController.cpp",
+  "output": "CMakeFiles/xasst.dir/src/controllers/FileController.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/controllers/HotUpdateController.cpp.o -c /workspace/xasst/src/controllers/HotUpdateController.cpp",
+  "file": "/workspace/xasst/src/controllers/HotUpdateController.cpp",
+  "output": "CMakeFiles/xasst.dir/src/controllers/HotUpdateController.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/services/FeedbackService.cpp.o -c /workspace/xasst/src/services/FeedbackService.cpp",
+  "file": "/workspace/xasst/src/services/FeedbackService.cpp",
+  "output": "CMakeFiles/xasst.dir/src/services/FeedbackService.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/services/FileService.cpp.o -c /workspace/xasst/src/services/FileService.cpp",
+  "file": "/workspace/xasst/src/services/FileService.cpp",
+  "output": "CMakeFiles/xasst.dir/src/services/FileService.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/services/HotUpdateService.cpp.o -c /workspace/xasst/src/services/HotUpdateService.cpp",
+  "file": "/workspace/xasst/src/services/HotUpdateService.cpp",
+  "output": "CMakeFiles/xasst.dir/src/services/HotUpdateService.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/utils/MD5Util.cpp.o -c /workspace/xasst/src/utils/MD5Util.cpp",
+  "file": "/workspace/xasst/src/utils/MD5Util.cpp",
+  "output": "CMakeFiles/xasst.dir/src/utils/MD5Util.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/utils/TokenUtil.cpp.o -c /workspace/xasst/src/utils/TokenUtil.cpp",
+  "file": "/workspace/xasst/src/utils/TokenUtil.cpp",
+  "output": "CMakeFiles/xasst.dir/src/utils/TokenUtil.cpp.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/views/UploadPage.cc.o -c /workspace/xasst/src/views/UploadPage.cc",
+  "file": "/workspace/xasst/src/views/UploadPage.cc",
+  "output": "CMakeFiles/xasst.dir/src/views/UploadPage.cc.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/views/FeedbackPage.cc.o -c /workspace/xasst/src/views/FeedbackPage.cc",
+  "file": "/workspace/xasst/src/views/FeedbackPage.cc",
+  "output": "CMakeFiles/xasst.dir/src/views/FeedbackPage.cc.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/views/SurveyPage.cc.o -c /workspace/xasst/src/views/SurveyPage.cc",
+  "file": "/workspace/xasst/src/views/SurveyPage.cc",
+  "output": "CMakeFiles/xasst.dir/src/views/SurveyPage.cc.o"
+},
+{
+  "directory": "/workspace/xasst/build",
+  "command": "/usr/bin/c++  -I/workspace/xasst/src -I/workspace/xasst/src/views -I/workspace/xasst/config -I/workspace/xasst/public/drogon/include -I/workspace/xasst/public/jsoncpp/include  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/xasst.dir/src/main.cpp.o -c /workspace/xasst/src/main.cpp",
+  "file": "/workspace/xasst/src/main.cpp",
+  "output": "CMakeFiles/xasst.dir/src/main.cpp.o"
+}
+]

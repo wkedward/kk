@@ -1,0 +1,4 @@
+/workspace/xasst/build/CMakeFiles/xasst.dir
+/workspace/xasst/build/CMakeFiles/test.dir
+/workspace/xasst/build/CMakeFiles/edit_cache.dir
+/workspace/xasst/build/CMakeFiles/rebuild_cache.dir

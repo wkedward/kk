@@ -9,7 +9,7 @@ namespace controllers {
 
 using namespace drogon;
 
-void FileController::showUploadPage(const HttpRequestPtr& req,
+void FileController::showUploadPage(const HttpRequestPtr&,
                                   std::function<void (const HttpResponsePtr&)>&& callback)
 {
     auto resp = HttpResponse::newHttpViewResponse("UploadPage");
@@ -20,7 +20,7 @@ void FileController::handleUpload(const HttpRequestPtr& req,
                              std::function<void (const HttpResponsePtr&)>&& callback)
 {
     auto& config = app().getCustomConfig();
-    auto uploadPath = config.get("app", Json::Value::nullMember)
+    auto uploadPath = config.get("app", Json::nullValue)
                               .get("upload_path", "./data/uploads/")
                               .asString();
 
@@ -42,9 +42,9 @@ void FileController::handleUpload(const HttpRequestPtr& req,
 
     Json::Value result;
     result["success"] = true;
-    result["file_id"] = uploadedFile->getId();
-    result["download_token"] = uploadedFile->getDownloadToken();
-    result["download_link"] = fileService.generateDownloadLink(uploadedFile->getDownloadToken());
+    result["file_id"] = uploadedFile->id;
+    result["download_token"] = uploadedFile->download_token;
+    result["download_link"] = fileService.generateDownloadLink(uploadedFile->download_token);
 
     auto resp = HttpResponse::newHttpJsonResponse(result);
     callback(resp);
@@ -65,19 +65,17 @@ void FileController::downloadFile(const HttpRequestPtr& req,
         return;
     }
 
-    std::string rangeHeader = req->getHeader("Range");
     auto resp = HttpResponse::newFileResponse(
-        file->getFilePath(),
-        file->getFileName(),
-        CT_APPLICATION_OCTET_STREAM,
-        true
+        file->file_path,
+        file->file_name,
+        CT_APPLICATION_OCTET_STREAM
     );
 
-    fileService.incrementDownloadCount(file->getId());
+    fileService.incrementDownloadCount(file->id);
     callback(resp);
 }
 
-void FileController::listFiles(const HttpRequestPtr& req,
+void FileController::listFiles(const HttpRequestPtr&,
                            std::function<void (const HttpResponsePtr&)>&& callback)
 {
     auto dbClient = app().getDbClient();

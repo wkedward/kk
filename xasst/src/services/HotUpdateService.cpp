@@ -12,7 +12,7 @@ using namespace drogon;
 HotUpdateService::HotUpdateService()
 {
     auto& config = app().getCustomConfig();
-    libraryStoragePath_ = config.get("app", Json::Value::nullMember)
+    libraryStoragePath_ = config.get("app", Json::nullValue)
                                  .get("library_path", "./data/libraries/")
                                  .asString();
     if(libraryStoragePath_.back() != '/') {
@@ -45,7 +45,7 @@ bool HotUpdateService::registerApp(const std::string& appId, int64_t userId)
     }
 }
 
-std::shared_ptr<drogon_model::xasst::Library> HotUpdateService::uploadLibrary(
+std::shared_ptr<models::Library> HotUpdateService::uploadLibrary(
     const std::string& appId,
     const std::string& libName,
     const std::string& tmpLibPath,
@@ -60,14 +60,23 @@ std::shared_ptr<drogon_model::xasst::Library> HotUpdateService::uploadLibrary(
     std::ofstream dst(newLibPath, std::ios::binary);
     dst << src.rdbuf();
 
-    auto library = std::make_shared<drogon_model::xasst::Library>();
-    library->setAppId(appId);
-    library->setLibName(libName);
-    library->setLibPath(newLibPath);
-    library->setVersion(version);
-    library->setMd5(md5);
-    library->setUploadedBy(uploadedBy);
-    library->save();
+    auto library = std::make_shared<models::Library>();
+    library->app_id = appId;
+    library->lib_name = libName;
+    library->lib_path = newLibPath;
+    library->version = version;
+    library->md5 = md5;
+    library->uploaded_by = uploadedBy;
+
+    auto dbClient = app().getDbClient();
+    auto result = dbClient->execSqlSync(
+        "INSERT INTO library (app_id, lib_name, lib_path, version, md5, uploaded_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))",
+        appId, libName, newLibPath, version, md5, uploadedBy);
+    
+    auto rowResult = dbClient->execSqlSync("SELECT last_insert_rowid()");
+    if(!rowResult.empty()) {
+        library->id = rowResult[0][0].as<long long>();
+    }
 
     return library;
 }
@@ -96,26 +105,13 @@ std::vector<LibraryUpdateInfo> HotUpdateService::checkForUpdates(
                 info.libPath = result[0]["lib_path"].as<std::string>();
                 updates.push_back(info);
             }
-        } else {
-            auto allResult = dbClient->execSqlSync(
-                "SELECT * FROM library WHERE app_id=? AND lib_name=? ORDER BY created_at DESC LIMIT 1",
-                appId, localLib.first);
-            
-            if(!allResult.empty()) {
-                LibraryUpdateInfo info;
-                info.libName = allResult[0]["lib_name"].as<std::string>();
-                info.version = allResult[0]["version"].as<std::string>();
-                info.md5 = allResult[0]["md5"].as<std::string>();
-                info.libPath = allResult[0]["lib_path"].as<std::string>();
-                updates.push_back(info);
-            }
         }
     }
 
     return updates;
 }
 
-std::shared_ptr<drogon_model::xasst::Library> HotUpdateService::getLatestLibrary(
+std::shared_ptr<models::Library> HotUpdateService::getLatestLibrary(
     const std::string& appId,
     const std::string& libName)
 {
@@ -128,8 +124,17 @@ std::shared_ptr<drogon_model::xasst::Library> HotUpdateService::getLatestLibrary
         return nullptr;
     }
 
-    auto library = std::make_shared<drogon_model::xasst::Library>();
-    library->updateByJson(result[0]);
+    auto library = std::make_shared<models::Library>();
+    library->id = result[0]["id"].as<long long>();
+    library->app_id = result[0]["app_id"].as<std::string>();
+    library->lib_name = result[0]["lib_name"].as<std::string>();
+    library->lib_path = result[0]["lib_path"].as<std::string>();
+    library->version = result[0]["version"].as<std::string>();
+    library->md5 = result[0]["md5"].as<std::string>();
+    library->uploaded_by = result[0]["uploaded_by"].as<long long>();
+    library->created_at = result[0]["created_at"].as<std::string>();
+    library->updated_at = result[0]["updated_at"].as<std::string>();
+    
     return library;
 }
 

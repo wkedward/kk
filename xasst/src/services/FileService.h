@@ -13,12 +13,12 @@ class FileService
     FileService();
     ~FileService() = default;
 
-    std::shared_ptr<drogon_model::xasst::File> uploadFile(
+    std::shared_ptr<models::File> uploadFile(
         const std::string& fileName,
         const std::string& filePath,
         int64_t uploadedBy);
 
-    std::shared_ptr<drogon_model::xasst::File> getFileByToken(const std::string& token);
+    std::shared_ptr<models::File> getFileByToken(const std::string& token);
 
     void incrementDownloadCount(int64_t fileId);
 

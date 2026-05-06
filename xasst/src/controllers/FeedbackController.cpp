@@ -8,7 +8,7 @@ namespace controllers {
 
 using namespace drogon;
 
-void FeedbackController::showFeedbackPage(const HttpRequestPtr& req,
+void FeedbackController::showFeedbackPage(const HttpRequestPtr&,
                                     std::function<void (const HttpResponsePtr&)>&& callback)
 {
     auto resp = HttpResponse::newHttpViewResponse("FeedbackPage");
@@ -19,7 +19,7 @@ void FeedbackController::submitFeedback(const HttpRequestPtr& req,
                               std::function<void (const HttpResponsePtr&)>&& callback)
 {
     auto& config = app().getCustomConfig();
-    auto uploadPath = config.get("app", Json::Value::nullMember)
+    auto uploadPath = config.get("app", Json::nullValue)
                               .get("upload_path", "./data/uploads/")
                               .asString();
 
@@ -40,8 +40,8 @@ void FeedbackController::submitFeedback(const HttpRequestPtr& req,
             }
         }
         
-        issueType = fileUpload.getParameter("issue_type");
-        description = fileUpload.getParameter("description");
+        issueType = fileUpload.getParameter<std::string>("issue_type");
+        description = fileUpload.getParameter<std::string>("description");
     } else {
         auto json = req->getJsonObject();
         if(json && json->isMember("issue_type") && json->isMember("description")) {
@@ -65,12 +65,12 @@ void FeedbackController::submitFeedback(const HttpRequestPtr& req,
 
     Json::Value result;
     result["success"] = true;
-    result["feedback_id"] = feedback->getId();
+    result["feedback_id"] = feedback->id;
     auto resp = HttpResponse::newHttpJsonResponse(result);
     callback(resp);
 }
 
-void FeedbackController::listUserFeedbacks(const HttpRequestPtr& req,
+void FeedbackController::listUserFeedbacks(const HttpRequestPtr&,
                                 std::function<void (const HttpResponsePtr&)>&& callback)
 {
     services::FeedbackService feedbackService;
@@ -82,11 +82,11 @@ void FeedbackController::listUserFeedbacks(const HttpRequestPtr& req,
     
     for(const auto& feedback : feedbacks) {
         Json::Value feedbackJson;
-        feedbackJson["id"] = feedback->getId();
-        feedbackJson["issue_type"] = feedback->getIssueType();
-        feedbackJson["description"] = feedback->getDescription();
-        feedbackJson["status"] = feedback->getStatus();
-        feedbackJson["created_at"] = feedback->getCreatedAt().toDbString();
+        feedbackJson["id"] = feedback->id;
+        feedbackJson["issue_type"] = feedback->issue_type;
+        feedbackJson["description"] = feedback->description;
+        feedbackJson["status"] = feedback->status;
+        feedbackJson["created_at"] = feedback->created_at;
         feedbacksJson.append(feedbackJson);
     }
     result["feedbacks"] = feedbacksJson;
@@ -95,7 +95,7 @@ void FeedbackController::listUserFeedbacks(const HttpRequestPtr& req,
     callback(resp);
 }
 
-void FeedbackController::listAllFeedbacks(const HttpRequestPtr& req,
+void FeedbackController::listAllFeedbacks(const HttpRequestPtr&,
                                 std::function<void (const HttpResponsePtr&)>&& callback)
 {
     services::FeedbackService feedbackService;
@@ -107,12 +107,12 @@ void FeedbackController::listAllFeedbacks(const HttpRequestPtr& req,
     
     for(const auto& feedback : feedbacks) {
         Json::Value feedbackJson;
-        feedbackJson["id"] = feedback->getId();
-        feedbackJson["user_id"] = feedback->getUserId();
-        feedbackJson["issue_type"] = feedback->getIssueType();
-        feedbackJson["description"] = feedback->getDescription();
-        feedbackJson["status"] = feedback->getStatus();
-        feedbackJson["created_at"] = feedback->getCreatedAt().toDbString();
+        feedbackJson["id"] = feedback->id;
+        feedbackJson["user_id"] = feedback->user_id;
+        feedbackJson["issue_type"] = feedback->issue_type;
+        feedbackJson["description"] = feedback->description;
+        feedbackJson["status"] = feedback->status;
+        feedbackJson["created_at"] = feedback->created_at;
         feedbacksJson.append(feedbackJson);
     }
     result["feedbacks"] = feedbacksJson;
@@ -148,9 +148,9 @@ void FeedbackController::updateFeedbackStatus(const HttpRequestPtr& req,
     callback(resp);
 }
 
-void FeedbackController::showSurveyPage(const HttpRequestPtr& req,
+void FeedbackController::showSurveyPage(const HttpRequestPtr&,
                                 std::function<void (const HttpResponsePtr&)>&& callback,
-                                int64_t id)
+                                int64_t)
 {
     auto resp = HttpResponse::newHttpViewResponse("SurveyPage");
     callback(resp);
@@ -181,7 +181,7 @@ void FeedbackController::createSurvey(const HttpRequestPtr& req,
 
     Json::Value result;
     result["success"] = true;
-    result["survey_id"] = survey->getId();
+    result["survey_id"] = survey->id;
     auto resp = HttpResponse::newHttpJsonResponse(result);
     callback(resp);
 }

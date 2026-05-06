@@ -21,7 +21,7 @@ class FeedbackService
     FeedbackService();
     ~FeedbackService() = default;
 
-    std::shared_ptr<drogon_model::xasst::Feedback> submitFeedback(
+    std::shared_ptr<models::Feedback> submitFeedback(
         int64_t userId,
         const std::string& issueType,
         const std::string& description,
@@ -30,17 +30,17 @@ class FeedbackService
 
     bool updateFeedbackStatus(int64_t feedbackId, const std::string& status);
 
-    std::vector<std::shared_ptr<drogon_model::xasst::Feedback>> getUserFeedbacks(int64_t userId);
+    std::vector<std::shared_ptr<models::Feedback>> getUserFeedbacks(int64_t userId);
 
-    std::vector<std::shared_ptr<drogon_model::xasst::Feedback>> getAllFeedbacks();
+    std::vector<std::shared_ptr<models::Feedback>> getAllFeedbacks();
 
-    std::shared_ptr<drogon_model::xasst::Survey> createSurvey(
+    std::shared_ptr<models::Survey> createSurvey(
         const std::string& title,
         const std::string& description,
         const std::string& questionsJson,
         int64_t createdBy);
 
-    std::shared_ptr<drogon_model::xasst::Survey> getSurvey(int64_t surveyId);
+    std::shared_ptr<models::Survey> getSurvey(int64_t surveyId);
 
     bool submitSurveyResponse(int64_t surveyId, int64_t userId, const std::vector<SurveyAnswer>& answers);
 };

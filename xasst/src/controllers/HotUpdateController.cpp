@@ -37,7 +37,7 @@ void HotUpdateController::uploadLibrary(const HttpRequestPtr& req,
                                 std::function<void (const HttpResponsePtr&)>&& callback)
 {
     auto& config = app().getCustomConfig();
-    auto uploadPath = config.get("app", Json::Value::nullMember)
+    auto uploadPath = config.get("app", Json::nullValue)
                               .get("upload_path", "./data/uploads/")
                               .asString();
 
@@ -76,8 +76,8 @@ void HotUpdateController::uploadLibrary(const HttpRequestPtr& req,
 
     Json::Value result;
     result["success"] = true;
-    result["library_id"] = library->getId();
-    result["md5"] = library->getMd5();
+    result["library_id"] = library->id;
+    result["md5"] = library->md5;
     auto resp = HttpResponse::newHttpJsonResponse(result);
     callback(resp);
 }
@@ -128,7 +128,7 @@ void HotUpdateController::checkUpdates(const HttpRequestPtr& req,
     callback(resp);
 }
 
-void HotUpdateController::downloadLibrary(const HttpRequestPtr& req,
+void HotUpdateController::downloadLibrary(const HttpRequestPtr&,
                                     std::function<void (const HttpResponsePtr&)>&& callback,
                                     const std::string& appId,
                                     const std::string& libName)
@@ -147,10 +147,9 @@ void HotUpdateController::downloadLibrary(const HttpRequestPtr& req,
     }
 
     auto resp = HttpResponse::newFileResponse(
-        library->getLibPath(),
-        library->getLibName() + "_" + library->getVersion() + ".so",
-        CT_APPLICATION_OCTET_STREAM,
-        true
+        library->lib_path,
+        library->lib_name + "_" + library->version + ".so",
+        CT_APPLICATION_OCTET_STREAM
     );
     callback(resp);
 }
