@@ -1,0 +1,27 @@
+{
+  "listeners": [
+    {
+      "address": "0.0.0.0",
+      "port": 8080
+    }
+  ],
+  "app": {
+    "upload_path": "./data/uploads/",
+    "file_path": "./data/files/",
+    "library_path": "./data/libraries/",
+    "max_upload_size": 1073741824,
+    "token_expire_hours": 24
+  },
+  "db_clients": [
+    {
+      "name": "default",
+      "rdbms": "sqlite3",
+      "filename": "./data/xasst.db",
+      "is_fast": false,
+      "connections": 4
+    }
+  ],
+  "session": {
+    "timeout": 86400
+  }
+}
