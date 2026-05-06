@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问题反馈 - XASST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .content {
+            padding: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        select, textarea, input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        select:focus, textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .file-upload-area {
+            border: 2px dashed #e0e0e0;
+            border-radius: 6px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        .file-upload-area.active {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+        .file-preview {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #f8f9ff;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9ff;
+        }
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        .feedback-list {
+            margin-top: 2rem;
+        }
+        .feedback-item {
+            padding: 1rem;
+            background: #f8f9ff;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .feedback-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .feedback-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #28a745;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .feedback-status.pending {
+            background: #ffc107;
+            color: #333;
+        }
+        .feedback-status.resolved {
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💬 问题反馈</h1>
+            <p>提交您遇到的问题，我们会尽快处理</p>
+        </div>
+        
+        <div class="nav">
+            <a href="/upload">文件上传</a>
+            <a href="/feedback">问题反馈</a>
+            <a href="/files">文件列表</a>
+        </div>
+        
+        <div class="content">
+            <div id="message" class="message"></div>
+            
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="issueType">问题类型</label>
+                    <select id="issueType" name="issue_type" required>
+                        <option value="">请选择问题类型</option>
+                        <option value="bug">程序错误</option>
+                        <option value="feature">功能建议</option>
+                        <option value="performance">性能问题</option>
+                        <option value="ui">界面问题</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">问题描述</label>
+                    <textarea id="description" name="description" placeholder="请详细描述您遇到的问题..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>截图上传</label>
+                    <div class="file-upload-area" id="screenshotArea">
+                        <input type="file" id="screenshotInput" name="screenshot" accept="image/*" style="display: none;">
+                        <div id="screenshotPreview" class="file-preview" style="display: none;"></div>
+                        <div id="screenshotPlaceholder" style="color: #666;">
+                            📷 点击或拖拽上传截图
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>视频上传</label>
+                    <div class="file-upload-area" id="videoArea">
+                        <input type="file" id="videoInput" name="video" accept="video/*" style="display: none;">
+                        <div id="videoPreview" class="file-preview" style="display: none;"></div>
+                        <div id="videoPlaceholder" style="color: #666;">
+                            🎥 点击或拖拽上传问题录像
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">提交反馈</button>
+            </form>
+            
+            <div class="feedback-list" id="feedbackList">
+                <h3 style="margin-bottom: 1rem; color: #333;">我的反馈</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedScreenshot = null;
+        let selectedVideo = null;
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Screenshot upload
+        const screenshotArea = document.getElementById('screenshotArea');
+        const screenshotInput = document.getElementById('screenshotInput');
+        const screenshotPreview = document.getElementById('screenshotPreview');
+        const screenshotPlaceholder = document.getElementById('screenshotPlaceholder');
+
+        screenshotArea.addEventListener('click', () => screenshotInput.click());
+        
+        screenshotArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            screenshotArea.classList.add('active');
+        });
+        
+        screenshotArea.addEventListener('dragleave', () => {
+            screenshotArea.classList.remove('active');
+        });
+        
+        screenshotArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            screenshotArea.classList.remove('active');
+            if (e.dataTransfer.files.length) {
+                screenshotInput.files = e.dataTransfer.files;
+                handleScreenshotSelect(e.dataTransfer.files[0]);
+            }
+        });
+        
+        screenshotInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleScreenshotSelect(e.target.files[0]);
+            }
+        });
+
+        function handleScreenshotSelect(file) {
+            selectedScreenshot = file;
+            screenshotPlaceholder.style.display = 'none';
+            screenshotPreview.style.display = 'flex';
+            screenshotPreview.innerHTML = `
+                <span>📷 ${file.name}</span>
+                <button onclick="removeScreenshot()" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1.25rem;">✕</button>
+            `;
+        }
+
+        function removeScreenshot() {
+            selectedScreenshot = null;
+            screenshotInput.value = '';
+            screenshotPlaceholder.style.display = 'block';
+            screenshotPreview.style.display = 'none';
+        }
+
+        // Video upload
+        const videoArea = document.getElementById('videoArea');
+        const videoInput = document.getElementById('videoInput');
+        const videoPreview = document.getElementById('videoPreview');
+        const videoPlaceholder = document.getElementById('videoPlaceholder');
+
+        videoArea.addEventListener('click', () => videoInput.click());
+        
+        videoArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            videoArea.classList.add('active');
+        });
+        
+        videoArea.addEventListener('dragleave', () => {
+            videoArea.classList.remove('active');
+        });
+        
+        videoArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            videoArea.classList.remove('active');
+            if (e.dataTransfer.files.length) {
+                videoInput.files = e.dataTransfer.files;
+                handleVideoSelect(e.dataTransfer.files[0]);
+            }
+        });
+        
+        videoInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleVideoSelect(e.target.files[0]);
+            }
+        });
+
+        function handleVideoSelect(file) {
+            selectedVideo = file;
+            videoPlaceholder.style.display = 'none';
+            videoPreview.style.display = 'flex';
+            videoPreview.innerHTML = `
+                <span>🎥 ${file.name}</span>
+                <button onclick="removeVideo()" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1.25rem;">✕</button>
+            `;
+        }
+
+        function removeVideo() {
+            selectedVideo = null;
+            videoInput.value = '';
+            videoPlaceholder.style.display = 'block';
+            videoPreview.style.display = 'none';
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = 'message ' + type;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('issue_type', document.getElementById('issueType').value);
+            formData.append('description', document.getElementById('description').value);
+            
+            if (selectedScreenshot) {
+                formData.append('screenshot', selectedScreenshot);
+            }
+            if (selectedVideo) {
+                formData.append('video', selectedVideo);
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '提交中...';
+            
+            try {
+                const response = await fetch('/feedback/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('反馈提交成功！', 'success');
+                    document.getElementById('feedbackForm').reset();
+                    removeScreenshot();
+                    removeVideo();
+                    loadFeedbacks();
+                } else {
+                    showMessage('提交失败：' + (data.message || '未知错误'), 'error');
+                }
+            } catch (error) {
+                showMessage('提交失败：' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '提交反馈';
+            }
+        });
+
+        async function loadFeedbacks() {
+            const response = await fetch('/feedback/user');
+            const data = await response.json();
+            
+            const feedbackList = document.getElementById('feedbackList');
+            if (data.success && data.feedbacks) {
+                feedbackList.innerHTML = '<h3 style="margin-bottom: 1rem; color: #333;">我的反馈</h3>';
+                data.feedbacks.forEach(feedback => {
+                    const item = document.createElement('div');
+                    item.className = 'feedback-item';
+                    item.innerHTML = `
+                        <div class="feedback-type">${feedback.issue_type}</div>
+                        <div class="feedback-status ${feedback.status}">${feedback.status}</div>
+                        <p style="color: #333; margin: 0.5rem 0;">${feedback.description}</p>
+                        <small style="color: #666;">${feedback.created_at}</small>
+                    `;
+                    feedbackList.appendChild(item);
+                });
+            }
+        }
+
+        loadFeedbacks();
+    </script>
+</body>
+</html>

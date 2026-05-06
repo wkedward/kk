@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户调查 - XASST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .content {
+            padding: 2rem;
+        }
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9ff;
+            border-radius: 8px;
+        }
+        .question-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background: #f0f2ff;
+        }
+        .option.selected {
+            background: #667eea;
+            color: white;
+        }
+        input[type="radio"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+        }
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9ff;
+        }
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        .message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 用户调查</h1>
+            <p>感谢您参与我们的用户体验调查</p>
+        </div>
+        
+        <div class="nav">
+            <a href="/upload">文件上传</a>
+            <a href="/feedback">问题反馈</a>
+            <a href="/files">文件列表</a>
+        </div>
+        
+        <div class="content">
+            <div id="message" class="message"></div>
+            
+            <form id="surveyForm">
+                <div class="question">
+                    <div class="question-title">1. 您对我们的服务整体满意度如何？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="very_satisfied">
+                            <span>非常满意</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="satisfied">
+                            <span>满意</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="neutral">
+                            <span>一般</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="dissatisfied">
+                            <span>不满意</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="very_dissatisfied">
+                            <span>非常不满意</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-title">2. 您最常用的功能是？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="file_upload">
+                            <span>文件上传下载</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="hot_update">
+                            <span>动态库热更新</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="feedback">
+                            <span>问题反馈</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="all">
+                            <span>所有功能</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-title">3. 您希望我们添加哪些新功能？</div>
+                    <textarea name="q3" placeholder="请描述您的建议..."></textarea>
+                </div>
+                
+                <div class="question">
+                    <div class="question-title">4. 您对我们的服务有什么其他的建议或意见吗？</div>
+                    <textarea name="q4" placeholder="请自由发言..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">提交调查</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const message = document.getElementById('message');
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = 'message ' + type;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const answers = [];
+            
+            for (let [key, value] of formData.entries()) {
+                answers.push({
+                    question_id: key,
+                    answer: value
+                });
+            }
+            
+            try {
+                const response = await fetch('/survey/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: '用户体验调查',
+                        description: '了解用户对我们服务的满意度和建议',
+                        questions: JSON.stringify([])
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('感谢您参与调查！', 'success');
+                    e.target.reset();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
